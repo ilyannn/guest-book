@@ -1,7 +1,7 @@
 from app import create_app, db
 from app.models import Message
 from app.serialization import MessageSchema
-from flask import jsonify, request
+from flask import request
 from flask_cors import CORS
 
 app = create_app()
@@ -15,7 +15,7 @@ CORS(app, resources={r'/*': {'origins': 'http://localhost:8080'}})
 
 @app.route('/messages', methods=['GET'])
 def list_messages():
-    return messages_serializer.jsonify(Message.query.all())
+    return messages_serializer.jsonify(Message.query.filter_by(deleted=False))
 
 
 @app.route('/messages', methods=['POST'])
@@ -25,3 +25,13 @@ def add_message():
     session.add(m)
     session.commit()
     return message_serializer.jsonify(m)
+
+
+@app.route('/messages/<message_id>', methods=['GET', 'DELETE'])
+def get_or_delete_message(message_id):
+    m = Message.query.filter_by(deleted=False, id=message_id).first_or_404()
+    if request.method == 'DELETE':
+        m.deleted = True
+        session.commit()
+    return message_serializer.jsonify(m)
+

@@ -22,7 +22,12 @@
             <td>{{ message.text }}</td>
             <td>
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  @click="onDeleteMessage(message)">
+                  Delete
+                </button>
               </div>
             </td>
           </tr>
@@ -54,7 +59,27 @@ export default {
             console.error(error);
         });
     },
+    onDeleteMessage(message) {
+      this.removeMessage(message.id);
+    },
+    removeMessage(messageID) {
+      const path = `http://localhost:5000/messages/${messageID}`;
+      axios.delete(path)
+        .then(() => {
+          this.getMessages();
+          this.message = 'Message successfully removed';
+          this.showMessage = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+          this.getMessages();
+          this.message = "Couldn't remove the message";
+          this.showMessage = true;
+        });
+    },
   },
+
   created() {
     this.getMessages();
   },
