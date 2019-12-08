@@ -9,7 +9,13 @@
         <form class="addForm" @submit.prevent="onAdd">
           <b-form-input v-model="newMessageAuthor" placeholder="Your name"/>
           <b-form-textarea v-model="newMessageText" placeholder="Your message"/>
-          <b-button variant="success" @click="onAdd">Add</b-button>
+          <b-button
+            variant="success"
+            @click="onAdd"
+            class="w-100"
+            :disabled="$v.newMessageAuthor.$invalid || $v.newMessageText.$invalid">
+            Add
+          </b-button>
         </form>
         <br>
         <form class="searchForm" @submit.prevent="onSearch">
@@ -56,9 +62,12 @@
 
 <script>
 import axios from 'axios';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
 import Alert from './Alert.vue';
 
 export default {
+  mixins: [validationMixin],
   data() {
     return {
       messages: [],
@@ -70,11 +79,20 @@ export default {
       searchQuery: '',
     };
   },
+  validations: {
+    newMessageAuthor: {
+      required,
+    },
+    newMessageText: {
+      required,
+    },
+  },
   components: {
     alert: Alert,
   },
   methods: {
     getMessages() {
+      this.showAlert = false;
       const path = 'http://localhost:5000/messages';
       const query = {
         params: {
@@ -91,11 +109,15 @@ export default {
         });
     },
     onAdd() {
+      this.$v.newMessageAuthor.$touch();
+      this.$v.newMessageText.$touch();
+      if (this.$v.newMessageAuthor.$anyError || this.$v.newMessageText.$anyError) {
+        return;
+      }
       const path = 'http://localhost:5000/messages';
       axios.post(path, { author: this.newMessageAuthor, text: this.newMessageText })
         .then(() => {
           this.getMessages();
-          this.showAlert = false;
           this.newMessageText = '';
         })
         .catch((error) => {
