@@ -11,7 +11,7 @@ session = db.session
 message_serializer = MessageSchema()
 messages_serializer = MessageSchema(many=True)
 
-CORS(app, resources={r'/*': {'origins': 'http://localhost:8080'}})
+CORS(app, resources={r'/*': {'origins': 'http://localhost:8090'}})
 
 
 @app.route('/messages', methods=['GET'])
