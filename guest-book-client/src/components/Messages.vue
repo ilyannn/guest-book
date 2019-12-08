@@ -3,9 +3,21 @@
     <div class="row">
       <div class="col-sm-10">
         <h1>Messages</h1>
-        <hr><br><br>
-        <button type="button" class="btn btn-success btn-sm">Add</button>
-        <br><br>
+        <hr><br>
+        <alert :text=alertText :variant=alertVariant v-if="showAlert"/>
+        <br>
+        <button type="button" class="btn btn-primary btn-sm">Add</button>
+        <br>
+        <form class="searchForm" @submit.prevent="onSearch">
+          <input type="text" v-model="searchQuery" placeholder="Search query">
+        </form>
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          @click="onSearch">
+          Search
+        </button>
+        <br>
         <table class="table table-hover">
           <thead>
           <tr>
@@ -17,7 +29,7 @@
           </thead>
           <tbody>
           <tr v-for="(message, index) in messages" :key="index">
-            <td>{{ message.created_date }}</td>
+            <td>{{ new Date(message.created_date).toLocaleTimeString() }}</td>
             <td>{{ message.author_name }}</td>
             <td>{{ message.text }}</td>
             <td>
@@ -40,17 +52,30 @@
 
 <script>
 import axios from 'axios';
+import Alert from './Alert.vue';
 
 export default {
   data() {
     return {
       messages: [],
+      showAlert: false,
+      alertText: '',
+      alertVariant: '',
+      searchQuery: '',
     };
+  },
+  components: {
+    alert: Alert,
   },
   methods: {
     getMessages() {
       const path = 'http://localhost:5000/messages';
-      axios.get(path)
+      const query = {
+        params: {
+          search: this.searchQuery,
+        },
+      };
+      axios.get(path, query)
         .then((res) => {
           this.messages = res.data;
         })
@@ -58,6 +83,9 @@ export default {
           // eslint-disable-next-line
             console.error(error);
         });
+    },
+    onSearch() {
+      this.getMessages();
     },
     onDeleteMessage(message) {
       this.removeMessage(message.id);
@@ -67,15 +95,17 @@ export default {
       axios.delete(path)
         .then(() => {
           this.getMessages();
-          this.message = 'Message successfully removed';
-          this.showMessage = true;
+          this.alertText = 'Message successfully removed';
+          this.alertVariant = 'success';
+          this.showAlert = true;
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
           this.getMessages();
-          this.message = "Couldn't remove the message";
-          this.showMessage = true;
+          this.alertText = "Couldn't remove the message";
+          this.alertVariant = 'warning';
+          this.showAlert = true;
         });
     },
   },

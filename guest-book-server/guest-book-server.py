@@ -3,6 +3,7 @@ from app.models import Message
 from app.serialization import MessageSchema
 from flask import request
 from flask_cors import CORS
+from sqlalchemy import desc
 
 app = create_app()
 session = db.session
@@ -15,7 +16,12 @@ CORS(app, resources={r'/*': {'origins': 'http://localhost:8080'}})
 
 @app.route('/messages', methods=['GET'])
 def list_messages():
-    return messages_serializer.jsonify(Message.query.filter_by(deleted=False))
+    searchString = request.args.get("search", "")
+    query = Message.query.filter_by(deleted=False)\
+        .filter(Message.text.contains(searchString) | Message.author_name.contains(searchString))\
+        .order_by(desc(Message.created_date))\
+        .limit(10)
+    return messages_serializer.jsonify(query)
 
 
 @app.route('/messages', methods=['POST'])
