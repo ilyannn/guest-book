@@ -6,17 +6,22 @@
         <hr><br>
         <alert :text=alertText :variant=alertVariant v-if="showAlert"/>
         <br>
-        <button type="button" class="btn btn-primary btn-sm">Add</button>
+        <form class="addForm" @submit.prevent="onAdd">
+          <b-form-input v-model="newMessageAuthor" placeholder="Your name"/>
+          <b-form-textarea v-model="newMessageText" placeholder="Your message"/>
+          <b-button variant="success" @click="onAdd">Add</b-button>
+        </form>
         <br>
         <form class="searchForm" @submit.prevent="onSearch">
-          <input type="text" v-model="searchQuery" placeholder="Search query">
+          <b-input-group>
+            <b-form-input type="search" v-model="searchQuery" placeholder="Search query"/>
+            <b-button
+              variant="primary"
+              @click="onSearch">
+            Search
+            </b-button>
+          </b-input-group>
         </form>
-        <button
-          type="button"
-          class="btn btn-secondary btn-sm"
-          @click="onSearch">
-          Search
-        </button>
         <br>
         <table class="table table-hover">
           <thead>
@@ -34,12 +39,11 @@
             <td>{{ message.text }}</td>
             <td>
               <div class="btn-group" role="group">
-                <button
-                  type="button"
-                  class="btn btn-danger btn-sm"
+                <b-button
+                  variant="danger"
                   @click="onDeleteMessage(message)">
                   Delete
-                </button>
+                </b-button>
               </div>
             </td>
           </tr>
@@ -61,6 +65,8 @@ export default {
       showAlert: false,
       alertText: '',
       alertVariant: '',
+      newMessageAuthor: '',
+      newMessageText: '',
       searchQuery: '',
     };
   },
@@ -81,7 +87,24 @@ export default {
         })
         .catch((error) => {
           // eslint-disable-next-line
-            console.error(error);
+          console.error(error);
+        });
+    },
+    onAdd() {
+      const path = 'http://localhost:5000/messages';
+      axios.post(path, { author: this.newMessageAuthor, text: this.newMessageText })
+        .then(() => {
+          this.getMessages();
+          this.showAlert = false;
+          this.newMessageText = '';
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+          this.getMessages();
+          this.alertText = "Couldn't add the message";
+          this.alertVariant = 'warning';
+          this.showAlert = true;
         });
     },
     onSearch() {
