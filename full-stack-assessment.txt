@@ -1,0 +1,22 @@
+Please build a simple "guest book" web application with a SQLite database, a
+Python backend and a React or Vue frontend. The application should be simple but
+also usable and secure.
+
+The application should present a form with text inputs for the submitter’s name
+and a message. Both fields are required. Entries should persist to the SQLite
+database along with the submission time.
+
+On the same page, display a list of entries in descending chronological order,
+limited to ten entries. Each entry in the list should display the entry time,
+submitter name, and message, and a "Delete" button to remove the entry. The list
+does not need to be paginated.
+
+Above the list, present a form with a text input for the search query and a
+"Search" button. When the form is submitted, update the entry list to include
+only entries that contain the search query text in the submitter name or entry
+message.
+
+Please deliver the application as a .tar.gz or .zip archive, with development
+artifacts (i.e. `node_modules`) removed. include any scripts needed to run the
+application and a README with instructions to set it up. Note any platform
+requirements and if possible support both macOS and Linux.
