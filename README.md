@@ -16,7 +16,7 @@
 ```
     
 
-  2. Serve the client:
+  2. Serve the client or [use other options](./guest-book-client/README.md):
 
 ```
     cd guest-book-client 
