@@ -31,4 +31,5 @@
 #### Notes:
 
  - if you use a different client port you need to update CORS settings in the `guest-book-server.py`
+ - SQLite can index the text if compiled with [FTS5 extension](https://sqlite.org/fts5.html) 
 
