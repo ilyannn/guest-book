@@ -2,8 +2,12 @@
 
 (Flask + Vue.js app)
 
+#### Problem Statement
 
-#### Run the app:
+See [`full-stack-assessment.txt`](./problem/full-stack-assessment.txt)
+
+
+#### Run the app
 
   1. Start a server:
 
@@ -28,8 +32,12 @@
   3. Open the page http://localhost:8090/ in your favorite browser
 
 
-#### Notes:
+#### Notes
 
  - if you use a different client port you need to update CORS settings in the `guest-book-server.py`
  - SQLite can index the text if compiled with [FTS5 extension](https://sqlite.org/fts5.html) 
 
+
+#### Example
+
+![](./problem/result_example.png)
