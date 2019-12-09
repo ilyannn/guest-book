@@ -378,3 +378,4 @@ npm-debug.log
 yarn-error.log
 
 # End of https://www.gitignore.io/api/python,virtualenv,pycharm,node,vue,vuejs,flask
+messages.sqlite
