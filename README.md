@@ -7,6 +7,14 @@
 See [`full-stack-assessment.txt`](./problem/full-stack-assessment.txt)
 
 
+#### Requirements
+
+ - Python (3.5 and newer)
+ - `npm`
+ - Free ports `5000`, `8090`
+ - A browser that can render the Vue client.
+ 
+
 #### Run the app
 
   1. Start a server:
