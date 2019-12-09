@@ -1,3 +1,8 @@
+import os
+
+
 class Config(object):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    def __init__(self, data_dir):
+        self.SQLALCHEMY_DATABASE_URI = 'sqlite:////' + os.path.join(data_dir, 'messages.sqlite')
+        self.SQLALCHEMY_TRACK_MODIFICATIONS = False

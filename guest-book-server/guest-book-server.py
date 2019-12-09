@@ -3,9 +3,10 @@ from app.models import Message
 from app.serialization import MessageSchema
 from flask import request
 from flask_cors import CORS
+import os
 from sqlalchemy import desc
 
-app = create_app()
+app = create_app(data_dir=os.path.abspath(os.path.dirname(__file__)))
 session = db.session
 
 message_serializer = MessageSchema()

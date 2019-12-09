@@ -5,9 +5,10 @@ from .config import Config
 db = SQLAlchemy()
 
 
-def create_app():
+def create_app(data_dir):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    config_data = Config(data_dir)
+    app.config.from_object(config_data)
     db.init_app(app)
 
     with app.app_context():
