@@ -2,12 +2,12 @@
 
 (Flask + Vue.js app)
 
-#### Problem Statement
+### Problem Statement
 
 See [`full-stack-assessment.txt`](./problem/full-stack-assessment.txt)
 
 
-#### Requirements
+### Requirements
 
  - Python (3.5 and newer)
  - `npm`
@@ -15,7 +15,7 @@ See [`full-stack-assessment.txt`](./problem/full-stack-assessment.txt)
  - A browser that can render the Vue client.
  
 
-#### Run the app
+### Run the app
 
   1. Start a server:
 
@@ -40,12 +40,12 @@ See [`full-stack-assessment.txt`](./problem/full-stack-assessment.txt)
   3. Open the page http://localhost:8090/ in your favorite browser
 
 
-#### Notes
+### Notes
 
  - if you use a different client port you need to update CORS settings in the `guest-book-server.py`
  - SQLite can index the text if compiled with [FTS5 extension](https://sqlite.org/fts5.html) 
 
 
-#### Example
+### Example
 
 ![](./problem/result_example.png)
